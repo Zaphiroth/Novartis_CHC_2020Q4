@@ -88,11 +88,10 @@ novartis.2020q4.gz <- history.novartis.chc %>%
 
 
 ##---- Write ----
-novartis.2020q4 <- history.novartis.chc %>% 
+novartis.delivery <- history.novartis.chc %>% 
   bind_rows(novartis.2020q4.bj, novartis.2020q4.sh, novartis.2020q4.gz)
 
-write.csv(novartis.2020q4, '03_Outputs/qv_data_2018Q1_2020Q4_CHC.csv', 
+write.csv(novartis.delivery, '03_Outputs/qv_data_2018Q1_2020Q4_CHC.csv', 
           fileEncoding = 'UTF-8', row.names = FALSE)
 
-
-
+write.xlsx(novartis.delivery, '03_Outputs/qv_data_2018Q1_2020Q4_CHC.xlsx')

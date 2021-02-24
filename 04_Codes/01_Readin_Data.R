@@ -23,7 +23,4 @@ chpa.2020q4 <- read.xlsx('02_Inputs/ims_chpa_to20Q4_fmt.xlsx')
 
 
 ##---- History delivery ----
-history.novartis <- fread('02_Inputs/qv_data_2018Q1_2020Q3_1129.csv', encoding = 'UTF-8')
-
-
-
+history.novartis <- fread('06_Deliveries/qv_data_2018Q1_2020Q3_1129.csv', encoding = 'UTF-8')

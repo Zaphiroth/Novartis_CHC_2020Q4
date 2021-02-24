@@ -107,14 +107,9 @@ growth.gz <- raw.gz %>%
   select(packcode, growth_value, growth_volume) %>% 
   full_join(growth.chpa, by = c('packcode' = 'Pack_ID')) %>% 
   mutate(growth_value = if_else(is.na(growth_value), growth_rmb, growth_value), 
-         growth_volume = if_else(is.na(growth_volume), growth_su, growth_volume)) %>% 
+         growth_volume = if_else(is.na(growth_volume), growth_unit, growth_volume)) %>% 
   mutate(growth_value = case_when(packcode %in% c('6749004', '3365902', '4743002') ~ growth_rmb, 
                                   TRUE ~ growth_value), 
-         growth_volume = case_when(packcode %in% c('6749004', '3365902', '4743002') ~ growth_su, 
+         growth_volume = case_when(packcode %in% c('6749004', '3365902', '4743002') ~ growth_unit, 
                                    TRUE ~ growth_volume)) %>% 
   select(packcode, growth_value, growth_volume)
-
-
-
-
-
