@@ -17,7 +17,8 @@ growth.chpa <- chpa.2020q4 %>%
 
 ## Beijing
 growth.bj <- raw.100 %>% 
-  filter(Province == '北京市', Quarter %in% c('2020Q3', '2020Q4'), 
+  filter(Province == '北京市', 
+         Quarter %in% c('2020Q3', '2020Q4'), 
          !is.na(packcode)) %>% 
   mutate(Year = as.character(Year), 
          packcode = stri_pad_left(packcode, 7, 0)) %>% 
@@ -46,6 +47,42 @@ growth.bj <- raw.100 %>%
          growth_volume = case_when(packcode %in% c('4514502', '5953102', '5869402', '6530702') ~ growth_unit, 
                                    TRUE ~ growth_volume), 
          growth_dosage = case_when(packcode %in% c('4514502', '5953102', '5869402', '6530702') ~ growth_su, 
+                                   TRUE ~ growth_dosage)) %>% 
+  select(packcode, growth_value, growth_volume, growth_dosage)
+
+growth.bj2 <- raw.bj.q3 %>% 
+  select(Project, Quarter, Province, Hospital_Name, packcode, Value, Volume, Dosage_Unit) %>% 
+  bind_rows(raw.bj.q4) %>% 
+  filter(grepl('中心', Hospital_Name), 
+         grepl('社区', Hospital_Name), 
+         !grepl('卫生院|卫生室|卫生站|服务站|社区站|医院', Hospital_Name)) %>% 
+  filter(Project == 'Servier', 
+         Province == '北京市', 
+         Quarter %in% c('2020Q3', '2020Q4'), 
+         !is.na(packcode)) %>% 
+  group_by(Quarter, packcode) %>% 
+  summarise(Value = sum(Value, na.rm = TRUE), 
+            Volume = sum(Volume, na.rm = TRUE), 
+            Dosage_Unit = sum(Dosage_Unit, na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  pivot_wider(id_cols = packcode, 
+              names_from = Quarter, 
+              values_from = c(Value, Volume, Dosage_Unit), 
+              values_fill = 0) %>% 
+  mutate(growth_value = `Value_2020Q4` / `Value_2020Q3`, 
+         growth_volume = `Volume_2020Q4` / `Volume_2020Q3`, 
+         growth_dosage = `Dosage_Unit_2020Q4` / `Dosage_Unit_2020Q3`) %>% 
+  filter(!is.na(growth_value), !is.infinite(growth_value), growth_value > 0) %>% 
+  select(packcode, growth_value, growth_volume, growth_dosage) %>% 
+  full_join(growth.chpa, by = c('packcode' = 'Pack_ID')) %>% 
+  mutate(growth_value = if_else(is.na(growth_value), growth_rmb, growth_value), 
+         growth_volume = if_else(is.na(growth_volume), growth_unit, growth_volume), 
+         growth_dosage = if_else(is.na(growth_dosage), growth_su, growth_dosage)) %>% 
+  mutate(growth_value = case_when(packcode %in% c('0008606', '0096702', '0243312', '1424408', '1517504', '4420704', '4514502', '6044602') ~ growth_rmb, 
+                                  TRUE ~ growth_value), 
+         growth_volume = case_when(packcode %in% c('0008606', '0096702', '0243312', '1424408', '1517504', '4420704', '4514502', '6044602') ~ growth_unit, 
+                                   TRUE ~ growth_volume), 
+         growth_dosage = case_when(packcode %in% c('0008606', '0096702', '0243312', '1424408', '1517504', '4420704', '4514502', '6044602') ~ growth_su, 
                                    TRUE ~ growth_dosage)) %>% 
   select(packcode, growth_value, growth_volume, growth_dosage)
 

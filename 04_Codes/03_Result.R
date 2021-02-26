@@ -24,7 +24,7 @@ novartis.2020q4.bj.ly <- history.novartis.chc %>%
 
 novartis.2020q4.bj <- history.novartis.chc %>% 
   filter(CITY == '北京市', QUARTER == '2020Q3') %>% 
-  left_join(growth.bj, by = c('PACK_ID' = 'packcode')) %>% 
+  left_join(growth.bj2, by = c('PACK_ID' = 'packcode')) %>% 
   mutate(growth_value = if_else(is.na(growth_value), 1, growth_value), 
          growth_volume = if_else(is.na(growth_volume), 1, growth_volume), 
          growth_dosage = if_else(is.na(growth_dosage), 1, growth_dosage)) %>% 

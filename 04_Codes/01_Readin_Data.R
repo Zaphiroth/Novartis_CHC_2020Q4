@@ -11,6 +11,11 @@
 raw.100 <- read_csv('02_Inputs/data/shequ_100_bjjszj_20_packid_moleinfo.csv', 
                     locale = locale(encoding = 'GB18030'))
 
+## Serier(Beijing)
+raw.bj.q3 <- read.xlsx('02_Inputs/data/Servier_北京市_2020Q1Q2Q3_packid_moleinfo.xlsx')
+raw.bj.q4 <- read_csv('02_Inputs/data/Servier_Pfizer_ahbjjssd20Q4_zj20Q3Q4_packid_moleinfo.csv', 
+                        locale = locale(encoding = 'GB18030'))
+
 ## CPA(Shanghai)
 raw.cpa <- read_feather('02_Inputs/data/cpa_辉瑞2020年1-11月.feather')
 cpa.mapping <- read.xlsx('02_Inputs/data/产品匹配表_Pfizer_20201029.xlsx')
