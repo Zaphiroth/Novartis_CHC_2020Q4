@@ -12,7 +12,7 @@ history.novartis.chc <- history.novartis %>%
   mutate(PACK_ID = stri_pad_left(PACK_ID, 7, 0))
 
 
-##---- 2020Q4 result ----
+##---- Novartis CHC 2020Q4 ----
 ## Beijing
 novartis.2020q4.bj.ly <- history.novartis.chc %>% 
   filter(CITY == '北京市', QUARTER == '2019Q4') %>% 
