@@ -87,7 +87,7 @@ novartis.2020q4.gz <- history.novartis.chc %>%
   })
 
 
-##---- Write ----
+##---- Result ----
 novartis.delivery <- history.novartis.chc %>% 
   bind_rows(novartis.2020q4.bj, novartis.2020q4.sh, novartis.2020q4.gz)
 
